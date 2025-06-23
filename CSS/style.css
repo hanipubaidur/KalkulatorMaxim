@@ -1,0 +1,52 @@
+/* Skema Warna yang Sudah Disesuaikan */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa; /* Latar belakang abu-abu muda */
+        }
+        .calculator-card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 8px   30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .calculator-header {
+            background: linear-gradient(135deg, #ffdd57, #fbbd23); /* Kuning yang lebih kalem */
+            color: #343a40; /* Teks header jadi gelap agar kontras */
+        }
+        .swap-button {
+            cursor: pointer;
+            border: 2px solid #ced4da; /* Border abu-abu */
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            color: #ffc107; /* Warna aksen kuning */
+            transition: all 0.3s ease;
+        }
+        .swap-button:hover {
+            background-color: #ffc107; /* Warna hover kuning */
+            color: #343a40; /* Teks hover gelap */
+            transform: rotate(180deg);
+            border-color: #ffc107;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); /* Fokus kuning */
+            border-color: #ffc107;
+        }
+        .input-group-text {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            color: #495057; /* Teks input group lebih gelap */
+        }
+        .footer-link {
+            text-decoration: none;
+            color: #6c757d; /* Warna teks footer abu-abu */
+            font-weight: 600;
+        }
+        .footer-link:hover {
+            color: #ffc107; /* Hover kuning */
+        }
