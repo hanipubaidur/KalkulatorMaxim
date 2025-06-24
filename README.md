@@ -13,7 +13,8 @@ Sebuah tool berbasis web sederhana untuk membantu mitra driver Maxim menghitung 
 
 ### Tampilan Aplikasi
 <p align="center">
-  <img src="https://storage.googleapis.com/gemini-prod-asia-southeast1-dc-common-ws-1/20250624_200311_Kalkulator_Tarif_Maxim_Offline_a75626a57c5d6c941.jpg" alt="Tampilan Aplikasi Kalkulator Tarif All-in-One" width="600">
+  <img src="https://imgur.com/a/XtibB0z" alt="Tampilan Aplikasi Kalkulator Bike" width="350">
+  <img src="https://imgur.com/a/FUtnQPU" alt="Tampilan Aplikasi Kalkulator Car" width="350">
 </p>
 
 ---
@@ -23,6 +24,13 @@ Sebuah tool berbasis web sederhana untuk membantu mitra driver Maxim menghitung 
 Aplikasi ini sudah di-hosting dan bisa diakses langsung melalui link di bawah ini.
 
 **[➡️ Buka Kalkulator Tarif Maxim (Bike & Car) ⬅️](https://hanipubaidur.github.io/KalkulatorMaxim/)**
+
+---
+
+## 🆕 Apa Yang Baru
+
+- Update tampilan aplikasi pada README dengan dua screenshot terbaru.
+- Logic perhitungan untuk layanan **Car** telah diperbarui.
 
 ---
 

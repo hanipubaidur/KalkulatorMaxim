@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-            // --- ELEMEN DOM ---
+ document.addEventListener('DOMContentLoaded', function() {
             const greetingEl = document.getElementById('greeting');
             const input1 = document.getElementById('input1');
             const input2 = document.getElementById('input2');
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const serviceTabs = document.querySelectorAll('.service-selector .nav-link');
             const noteSection = document.getElementById('note-section');
 
-            // --- PARAMETER RUMUS ---
             const params = {
                 bike: {
                     rate: 2400,
@@ -27,28 +25,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             };
             
-            // --- STATE (KONDISI AWAL) ---
-            let currentService = 'bike'; // 'bike' atau 'car'
-            let isDistanceToFare = true; // true = Jarak -> Tarif
+            let currentService = 'bike';
+            let isDistanceToFare = true;
 
-            // --- FUNGSI ---
             function setGreeting() {
                 const hour = new Date().getHours();
-                greetingEl.textContent = hour >= 5 && hour < 12 ? 'Selamat Pagi, Semangat Cari Orderan!' :
-                                     hour >= 12 && hour < 15 ? 'Selamat Siang, Semangat Cari Orderan!' :
-                                     hour >= 15 && hour < 18 ? 'Selamat Sore, Semangat Cari Orderan!' :
-                                     'Selamat Malam, Semangat Cari Orderan!';
+                const greetingText = hour >= 5 && hour < 12 ? 'Selamat Pagi' :
+                                     hour >= 12 && hour < 15 ? 'Selamat Siang' :
+                                     hour >= 15 && hour < 18 ? 'Selamat Sore' :
+                                     'Selamat Malam';
+                greetingEl.textContent = `${greetingText}, Semangat Cari Orderan!`;
             }
 
             function updateNote() {
                 const p = params[currentService];
                 noteSection.innerHTML = `
                     <p class="small text-secondary">
-                        <strong>NB:</strong> Tarif ini adalah <strong>estimasi</strong> untuk layanan ${p.serviceName} di Yogyakarta, dihitung berdasarkan formula:
+                        <strong>NB:</strong> Tarif ini adalah <strong>estimasi</strong> untuk layanan ${p.serviceName} di Yogyakarta.
                         <br>
-                        <code>${p.formulaText}</code>
+                        - Tarif minimal <strong>Rp ${new Intl.NumberFormat('id-ID').format(p.minFare)}</strong> (untuk jarak 0-3 km).
                         <br>
-                        Dengan penerapan tarif minimal <strong>Rp ${new Intl.NumberFormat('id-ID').format(p.minFare)}</strong>. Harga final di aplikasi bisa sedikit berbeda.
+                        - Jarak di atas 3 km dihitung dengan formula dan bisa sedikit berbeda dari harga final di aplikasi.
                     </p>`;
             }
 
@@ -63,10 +60,21 @@ document.addEventListener('DOMContentLoaded', function() {
                         input2.value = ''; return;
                     }
 
-                    const calculatedFare = (distance * p.rate) + p.adjustment;
-                    const finalFare = Math.max(calculatedFare, p.minFare);
-                    const roundedFare = Math.ceil(finalFare / 100) * 100;
+                    let finalFare;
+
+                    // ==========================================================
+                    // --- PERBAIKAN LOGIKA ADA DI SINI ---
+                    // Terapkan tarif flat untuk Maxim Car di bawah 3 km
+                    if (currentService === 'car' && distance <= 3) {
+                        finalFare = p.minFare;
+                    } else {
+                        // Gunakan rumus standar untuk kasus lain
+                        const calculatedFare = (distance * p.rate) + p.adjustment;
+                        finalFare = Math.max(calculatedFare, p.minFare);
+                    }
+                    // ==========================================================
                     
+                    const roundedFare = Math.ceil(finalFare / 100) * 100;
                     input2.value = new Intl.NumberFormat('id-ID').format(roundedFare);
                 } else {
                     const fare = parseFloat(input1.value.replace(/[^0-9]/g, ''));
@@ -75,6 +83,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     if (fare < p.minFare) {
                         input2.value = `Tarif min. Rp ${new Intl.NumberFormat('id-ID').format(p.minFare)}`;
+                        return;
+                    }
+                    // Logika kebalikan rumus
+                    // Jika tarif sama dengan tarif minimal, kita tidak bisa pastikan jaraknya
+                    if (fare === p.minFare && currentService === 'car') {
+                        input2.value = '~ 0 - 3'; // Beri estimasi rentang
                         return;
                     }
                     const calculatedDistance = (fare - p.adjustment) / p.rate;
@@ -86,39 +100,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 isDistanceToFare = !isDistanceToFare;
                 input1.value = '';
                 input2.value = '';
-
-                const label1Text = isDistanceToFare ? 'Jarak Perjalanan' : 'Budget Tarif';
-                const label2Text = isDistanceToFare ? 'Estimasi Tarif' : 'Estimasi Jarak';
-                const placeholder = isDistanceToFare ? 'Contoh: 4.5' : `Contoh: ${params[currentService].minFare + 5000}`;
-                
-                label1.textContent = label1Text;
-                label2.textContent = label2Text;
-                input1.placeholder = placeholder;
+                label1.textContent = isDistanceToFare ? 'Jarak Perjalanan' : 'Budget Tarif';
+                label2.textContent = isDistanceToFare ? 'Estimasi Tarif' : 'Estimasi Jarak';
+                input1.placeholder = isDistanceToFare ? 'Contoh: 4.5' : `Contoh: ${params[currentService].minFare + 5000}`;
             }
 
-            // --- EVENT LISTENERS ---
             serviceTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     currentService = tab.getAttribute('data-service');
                     input1.value = '';
                     input2.value = '';
                     updateNote();
-                    calculate(); // Recalculate if there's any value
                 });
             });
             
             input1.addEventListener('input', calculate);
-
             input1.addEventListener('keyup', function(e) {
                 if (!isDistanceToFare) {
                     let value = parseInt(this.value.replace(/[^,\d]/g, ''));
                     this.value = isNaN(value) ? "" : new Intl.NumberFormat('id-ID').format(value);
                 }
             });
-
             swapButton.addEventListener('click', swapCalculation);
 
-            // Inisialisasi awal
             setGreeting();
             updateNote();
         });
