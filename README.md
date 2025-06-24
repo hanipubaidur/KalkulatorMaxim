@@ -13,8 +13,8 @@ Sebuah tool berbasis web sederhana untuk membantu mitra driver Maxim menghitung 
 
 ### Tampilan Aplikasi
 <p align="center">
-  <img src="https://imgur.com/a/XtibB0z" alt="Tampilan Aplikasi Kalkulator Bike" width="350">
-  <img src="https://imgur.com/a/FUtnQPU" alt="Tampilan Aplikasi Kalkulator Car" width="350">
+  <img src="assets/bike.png" alt="Tampilan Aplikasi Kalkulator Bike" width="350">
+  <img src="assets/car.png" alt="Tampilan Aplikasi Kalkulator Car" width="350">
 </p>
 
 ---
