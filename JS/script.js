@@ -1,4 +1,4 @@
- document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
             const greetingEl = document.getElementById('greeting');
             const input1 = document.getElementById('input1');
             const input2 = document.getElementById('input2');
@@ -9,20 +9,8 @@
             const noteSection = document.getElementById('note-section');
 
             const params = {
-                bike: {
-                    rate: 2400,
-                    adjustment: -1800,
-                    minFare: 8900,
-                    formulaText: '(Jarak &times; Rp 2.400) - Rp 1.800',
-                    serviceName: 'Maxim Bike'
-                },
-                car: {
-                    rate: 4150,
-                    adjustment: 3100,
-                    minFare: 12100,
-                    formulaText: '(Jarak &times; Rp 4.150) + Rp 3.100',
-                    serviceName: 'Maxim Car'
-                }
+                bike: { minFare: 8900 },
+                car: { minFare: 12100 }
             };
             
             let currentService = 'bike';
@@ -30,99 +18,114 @@
 
             function setGreeting() {
                 const hour = new Date().getHours();
-                const greetingText = hour >= 5 && hour < 12 ? 'Selamat Pagi' :
-                                     hour >= 12 && hour < 15 ? 'Selamat Siang' :
-                                     hour >= 15 && hour < 18 ? 'Selamat Sore' :
-                                     'Selamat Malam';
+                const greetingText = hour >= 5 && hour < 12 ? 'Selamat Pagi' : hour >= 12 && hour < 15 ? 'Selamat Siang' : hour >= 15 && hour < 18 ? 'Selamat Sore' : 'Selamat Malam';
                 greetingEl.textContent = `${greetingText}, Semangat Cari Orderan!`;
             }
 
+            // --- FUNGSI 'updateNote' YANG DISEMPURNAKAN ---
             function updateNote() {
-                const p = params[currentService];
-                noteSection.innerHTML = `
-                    <p class="small text-secondary">
-                        <strong>NB:</strong> Tarif ini adalah <strong>estimasi</strong> untuk layanan ${p.serviceName} di Yogyakarta.
+                let noteContent = `
+                    <p class="small text-secondary mb-0">
+                        <strong>Penting:</strong> Kalkulator ini adalah <i>tool independen</i> dan bukan aplikasi resmi dari Maxim. 
+                        Perhitungan tarif di bawah ini adalah <strong>hasil estimasi</strong> yang didasarkan pada analisis puluhan data orderan nyata di area Yogyakarta.
+                    </p>
+                    <hr class="my-2">
+                    <p class="small text-secondary mb-1">
+                `;
+
+                if (currentService === 'bike') {
+                    noteContent += `
+                        Layanan <strong>Bike</strong> diestimasi menggunakan <strong>formula progresif tunggal</strong>:
                         <br>
-                        - Tarif minimal <strong>Rp ${new Intl.NumberFormat('id-ID').format(p.minFare)}</strong> (untuk jarak 0-3 km).
-                        <br>
-                        - Jarak di atas 3 km dihitung dengan formula dan bisa sedikit berbeda dari harga final di aplikasi.
-                    </p>`;
+                        <code>(Jarak &times; Rp 2.400) - Rp 1.800</code>, dengan tarif minimal <strong>Rp 8.900</strong>.
+                    `;
+                } else {
+                    noteContent += `
+                        Layanan <strong>Car</strong> diestimasi menggunakan <strong>model presisi 3-lapis</strong>:
+                        <ul class="mb-0 ps-3">
+                            <li><strong>0-3 km:</strong> Tarif flat <strong>Rp 12.100</strong>.</li>
+                            <li><strong>3.1-9 km:</strong> <code>Rp 625 + (Jarak &times; Rp 4.200)</code>.</li>
+                            <li><strong>>9 km:</strong> <code>Rp 3.200 + (Jarak &times; Rp 4.140)</code>.</li>
+                        </ul>
+                    `;
+                }
+
+                noteContent += `
+                    </p>
+                    <p class="small text-danger mt-2 fst-italic">
+                        *Tarif final di aplikasi resmi dapat berbeda karena faktor jam sibuk (surge price) dan kondisi lalu lintas.
+                    </p>
+                `;
+                noteSection.innerHTML = noteContent;
             }
 
             function calculate() {
-                const p = params[currentService];
-
                 if (isDistanceToFare) {
                     const standardizedValue = input1.value.replace(',', '.');
                     const distance = parseFloat(standardizedValue);
-                    
-                    if (isNaN(distance) || distance <= 0) {
-                        input2.value = ''; return;
-                    }
+                    if (isNaN(distance) || distance <= 0) { input2.value = ''; return; }
 
-                    let finalFare;
-
-                    // ==========================================================
-                    // --- PERBAIKAN LOGIKA ADA DI SINI ---
-                    // Terapkan tarif flat untuk Maxim Car di bawah 3 km
-                    if (currentService === 'car' && distance <= 3) {
-                        finalFare = p.minFare;
-                    } else {
-                        // Gunakan rumus standar untuk kasus lain
-                        const calculatedFare = (distance * p.rate) + p.adjustment;
-                        finalFare = Math.max(calculatedFare, p.minFare);
+                    let finalFare = 0;
+                    if (currentService === 'bike') {
+                        const calculatedFare = (distance * 2400) - 1800;
+                        finalFare = Math.max(calculatedFare, params.bike.minFare);
+                    } else { // Layanan Car dengan Sistem 3 Lapis
+                        if (distance <= 3) {
+                            finalFare = params.car.minFare;
+                        } else if (distance > 3 && distance <= 9) {
+                            finalFare = 625 + (distance * 4200);
+                        } else { // distance > 9
+                            finalFare = 3200 + (distance * 4140);
+                        }
                     }
-                    // ==========================================================
-                    
                     const roundedFare = Math.ceil(finalFare / 100) * 100;
                     input2.value = new Intl.NumberFormat('id-ID').format(roundedFare);
                 } else {
                     const fare = parseFloat(input1.value.replace(/[^0-9]/g, ''));
-                    if (isNaN(fare)) {
-                        input2.value = ''; return;
-                    }
+                    if (isNaN(fare)) { input2.value = ''; return; }
+                    
+                    const p = params[currentService];
                     if (fare < p.minFare) {
                         input2.value = `Tarif min. Rp ${new Intl.NumberFormat('id-ID').format(p.minFare)}`;
                         return;
                     }
-                    // Logika kebalikan rumus
-                    // Jika tarif sama dengan tarif minimal, kita tidak bisa pastikan jaraknya
-                    if (fare === p.minFare && currentService === 'car') {
-                        input2.value = '~ 0 - 3'; // Beri estimasi rentang
-                        return;
+
+                    let estimatedDistance = 0;
+                    if(currentService === 'bike') {
+                        estimatedDistance = (fare + 1800) / 2400;
+                    } else {
+                         if (fare === 12100) { input2.value = '~ 0 - 3'; return; }
+                         // Menggunakan estimasi terbalik dari rumus lapis 2 & 3
+                         if (fare <= 40000) { // Asumsi tarif di bawah 40rb masuk lapis 2
+                            estimatedDistance = (fare - 625) / 4200;
+                         } else { // Asumsi tarif di atas 40rb masuk lapis 3
+                            estimatedDistance = (fare - 3200) / 4140;
+                         }
                     }
-                    const calculatedDistance = (fare - p.adjustment) / p.rate;
-                    input2.value = calculatedDistance.toFixed(1);
+                    input2.value = Math.max(0, estimatedDistance).toFixed(1);
                 }
             }
 
             function swapCalculation() {
                 isDistanceToFare = !isDistanceToFare;
-                input1.value = '';
-                input2.value = '';
+                [input1.value, input2.value] = ['', ''];
                 label1.textContent = isDistanceToFare ? 'Jarak Perjalanan' : 'Budget Tarif';
                 label2.textContent = isDistanceToFare ? 'Estimasi Tarif' : 'Estimasi Jarak';
-                input1.placeholder = isDistanceToFare ? 'Contoh: 4.5' : `Contoh: ${params[currentService].minFare + 5000}`;
+                input1.placeholder = isDistanceToFare ? 'Contoh: 4.5' : `Contoh: 25000`;
             }
 
             serviceTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
+                    document.querySelector('.service-selector .nav-link.active').classList.remove('active');
+                    tab.classList.add('active');
                     currentService = tab.getAttribute('data-service');
-                    input1.value = '';
-                    input2.value = '';
+                    [input1.value, input2.value] = ['', ''];
                     updateNote();
                 });
             });
             
             input1.addEventListener('input', calculate);
-            input1.addEventListener('keyup', function(e) {
-                if (!isDistanceToFare) {
-                    let value = parseInt(this.value.replace(/[^,\d]/g, ''));
-                    this.value = isNaN(value) ? "" : new Intl.NumberFormat('id-ID').format(value);
-                }
-            });
             swapButton.addEventListener('click', swapCalculation);
-
             setGreeting();
             updateNote();
         });
