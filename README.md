@@ -12,7 +12,8 @@ Sebuah tool berbasis web presisi tinggi untuk membantu mitra driver Maxim menghi
 
 ### Tampilan Aplikasi
 <p align="center">
-  <img src="https://storage.googleapis.com/gemini-prod-asia-southeast1-dc-common-ws-1/20250624_200311_Kalkulator_Tarif_Maxim_Offline_a75626a57c5d6c941.jpg" alt="Tampilan Aplikasi Kalkulator Tarif All-in-One" width="600">
+  <img src="assets/bike.png" alt="Tampilan Aplikasi Kalkulator Tarif All-in-One" width="600">
+  <img src="assets/car.png" alt="Tampilan Aplikasi Kalkulator Tarif All-in-One" width="600">
 </p>
 
 ---
