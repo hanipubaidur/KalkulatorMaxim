@@ -1,20 +1,18 @@
-# Kalkulator Tarif Maxim (Bike & Car)
+# Kalkulator Tarif Maxim (Bike & Car) - Presisi Tinggi
 
 <p align="center">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-  <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap">
-  <img src="https://img.shields.io/badge/versi-2.0-blue?style=for-the-badge" alt="Versi">
+  <img src="https://img.shields.io/badge/versi-3.1-blue?style=for-the-badge" alt="Versi">
   <img src="https://img.shields.io/badge/lisensi-MIT-green?style=for-the-badge" alt="Lisensi">
 </p>
 
-Sebuah tool berbasis web sederhana untuk membantu mitra driver Maxim menghitung dan memberikan estimasi tarif untuk orderan offline. Proyek ini mendukung layanan **Bike** dan **Car**, dibuat berdasarkan analisis data dan reverse-engineering tarif di area Yogyakarta.
+Sebuah tool berbasis web presisi tinggi untuk membantu mitra driver Maxim menghitung dan memberikan estimasi tarif untuk orderan offline. Proyek ini mendukung layanan **Bike** dan **Car**, dibuat berdasarkan analisis data komprehensif dari puluhan orderan nyata di area Yogyakarta.
 
 ### Tampilan Aplikasi
 <p align="center">
-  <img src="assets/bike.png" alt="Tampilan Aplikasi Kalkulator Bike" width="350">
-  <img src="assets/car.png" alt="Tampilan Aplikasi Kalkulator Car" width="350">
+  <img src="https://storage.googleapis.com/gemini-prod-asia-southeast1-dc-common-ws-1/20250624_200311_Kalkulator_Tarif_Maxim_Offline_a75626a57c5d6c941.jpg" alt="Tampilan Aplikasi Kalkulator Tarif All-in-One" width="600">
 </p>
 
 ---
@@ -23,61 +21,61 @@ Sebuah tool berbasis web sederhana untuk membantu mitra driver Maxim menghitung 
 
 Aplikasi ini sudah di-hosting dan bisa diakses langsung melalui link di bawah ini.
 
-**[➡️ Buka Kalkulator Tarif Maxim (Bike & Car) ⬅️](https://hanipubaidur.github.io/KalkulatorMaxim/)**
-
----
-
-## 🆕 Apa Yang Baru
-
-- Update tampilan aplikasi pada README dengan dua screenshot terbaru.
-- Logic perhitungan untuk layanan **Car** telah diperbarui.
+**[➡️ Buka Kalkulator Tarif Maxim (Presisi Tinggi) ⬅️](https://hanipubaidur.github.io/KalkulatorMaxim/)**
 
 ---
 
 ## ✨ Fitur Utama
 
--   **Pemilihan Layanan:** Pilih antara layanan **Bike** dan **Car** untuk perhitungan yang spesifik.
--   **Kalkulasi Dua Arah:** Hitung **Tarif dari Jarak** (KM -> Rp) dan estimasi **Jarak dari Tarif** (Rp -> KM).
--   **Tombol Swap:** Tukar mode perhitungan dengan mudah hanya dengan satu klik.
--   **Penanganan Desimal:** Menerima input jarak dengan format desimal, baik menggunakan titik (`4.5`) maupun koma (`4,5`).
--   **Sapaan Dinamis:** Memberikan ucapan selamat (Pagi, Siang, Sore, Malam) sesuai waktu lokal.
--   **Desain Responsif:** Tampilan optimal di berbagai perangkat.
--   **Transparansi Rumus:** Dilengkapi keterangan dinamis yang menampilkan formula sesuai layanan yang dipilih.
+-   **Pemilihan Layanan:** Pilih antara layanan **Bike** dan **Car**.
+-   **Model Perhitungan Presisi:** Mengimplementasikan **Sistem 3 Lapis** untuk tarif Car demi akurasi maksimal.
+-   **Kalkulasi Dua Arah:** Hitung **Tarif dari Jarak** dan estimasi **Jarak dari Tarif**.
+-   **Penanganan Desimal & Sapaan Dinamis**.
+-   **Desain Responsif & Tema Nyaman**.
+-   **Transparansi Rumus:** Keterangan dinamis menampilkan formula sesuai layanan yang dipilih.
 
 ---
 
 ## 💻 Teknologi yang Digunakan
 
--   **HTML5:** Untuk struktur dasar halaman.
--   **CSS3 & Bootstrap 5:** Untuk styling dan layout responsif.
--   **JavaScript (ES6):** Untuk semua logika fungsional dan interaktivitas.
+-   **HTML5, CSS3 (Bootstrap 5), JavaScript (ES6)**
 
 ---
 
 ## 🚀 Cara Penggunaan
 
-### 1. Akses Langsung (Online)
-Cara termudah adalah dengan mengunjungi **[link demo langsung](https://hanipubaidur.github.io/KalkulatorMaxim/)**. Aplikasi bisa langsung digunakan dari browser di HP maupun desktop.
-
-### 2. Penggunaan Lokal (Offline)
-1.  **Unduh Proyek:** Di halaman GitHub, klik tombol hijau **`< > Code`**, lalu pilih **`Download ZIP`**. Ekstrak file tersebut.
-2.  **Buka di Browser:** Masuk ke folder hasil ekstrak dan klik dua kali file `index.html`.
+Cukup kunjungi **[link demo langsung](https://hanipubaidur.github.io/KalkulatorMaxim/)**. Aplikasi bisa langsung digunakan dari browser di HP maupun desktop tanpa perlu instalasi apa pun.
 
 ---
 
-## ➗ Formula Perhitungan
+## ➗ Formula Perhitungan Akurat
 
-Kalkulator ini menggunakan formula berbeda untuk setiap layanan, ditemukan dari hasil analisis data orderan nyata.
+Kalkulator ini menggunakan model perhitungan berbeda untuk setiap layanan.
 
 ### Layanan Maxim Bike
+-   **Sistem:** 1 Lapis Progresif
 -   **Formula:** `(Jarak × Rp 2.400) - Rp 1.800`
 -   **Tarif Minimal:** `Rp 8.900`
 
 ### Layanan Maxim Car
--   **Formula:** `(Jarak × Rp 4.150) + Rp 3.100`
--   **Tarif Minimal:** `Rp 12.100`
+-   **Sistem:** 3 Lapis (Tiered System)
+-   **Lapis 1 (0 - 3 km):** Tarif Flat `Rp 12.100`
+-   **Lapis 2 (3.1 - 9 km):** `Rp 625 + (Jarak × Rp 4.200)`
+-   **Lapis 3 (> 9 km):** `Rp 3.200 + (Jarak × Rp 4.140)`
 
-**Disclaimer:** Formula ini adalah hasil estimasi dan reverse-engineering. Tarif final di aplikasi resmi Maxim dapat berbeda tergantung pada kondisi lalu lintas, waktu pemesanan, dan kebijakan terbaru dari Maxim.
+**Disclaimer:** Formula ini adalah hasil estimasi dan reverse-engineering. Tarif final di aplikasi resmi Maxim dapat berbeda karena faktor jam sibuk (surge price), kondisi lalu lintas, dan kebijakan terbaru dari Maxim.
+
+---
+
+## 🤝 Kontribusi
+
+Merasa ada perhitungan yang kurang akurat atau punya data orderan baru? Anda bisa berkontribusi pada proyek ini!
+
+1.  Buka tab **"Issues"** di halaman GitHub ini.
+2.  Buat "New Issue" untuk melaporkan bug atau memberikan saran.
+3.  Sertakan screenshot data orderan Anda agar formula bisa terus disempurnakan.
+
+Setiap kontribusi data sangat dihargai untuk meningkatkan akurasi kalkulator ini.
 
 ---
 
