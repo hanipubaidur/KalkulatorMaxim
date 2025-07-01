@@ -1,4 +1,4 @@
-// ===== v10.0 =====
+// ===== v11.0 =====
 
 document.addEventListener('DOMContentLoaded', function() {
     // --- ELEMEN DOM ---
@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
         let noteContent = `<p class="small text-secondary mb-0"><strong>Penting:</strong> Kalkulator ini adalah <i>tool independen</i> & bukan aplikasi resmi Maxim. Perhitungan adalah <strong>hasil estimasi</strong> berdasarkan analisis data nyata di Yogyakarta.</p><hr class="my-2"><p class="small text-secondary mb-1">`;
         switch (currentService) {
             case 'bike':
-                noteContent += `Layanan <strong>Bike</strong> diestimasi menggunakan <strong>model presisi 2-lapis</strong>:<ul class="mb-0 ps-3"><li><strong>0-7 km:</strong> <code>Rp 900 + (Jarak &times; Rp 1.750)</code></li><li><strong>>7 km:</strong> <code>Rp 3.500 + (Jarak &times; Rp 1.550)</code></li></ul>Dengan tarif minimal <strong>Rp 6.000</strong>.`;
-                break;
+                noteContent += `Layanan <strong>Bike</strong> diestimasi menggunakan <strong>formula progresif tunggal</strong>:<br><code>(Jarak &times; Rp 2.400) - Rp 1.800</code>, dengan tarif minimal <strong>Rp 8.900</strong>.`;
+                break;    
             case 'delivery':
                  noteContent += `Layanan <strong>Bike Delivery</strong> diestimasi menggunakan <strong>model 2-lapis</strong>:<ul class="mb-0 ps-3"><li><strong>0-3 km:</strong> Tarif flat <strong>Rp 4.100</strong>.</li><li><strong>>3 km:</strong> <code>Rp 50 + (Jarak &times; Rp 1.650)</code>.</li></ul>`;
-                break;  
+                break;
             case 'car':
                 noteContent += `Layanan <strong>Car</strong> diestimasi menggunakan <strong>model presisi 3-lapis</strong>:<ul class="mb-0 ps-3"><li><strong>0-3 km:</strong> Tarif flat <strong>Rp 12.100</strong>.</li><li><strong>3.1-9 km:</strong> <code>Rp 625 + (Jarak &times; Rp 4.200)</code>.</li><li><strong>>9 km:</strong> <code>Rp 3.200 + (Jarak &times; Rp 4.140)</code>.</li></ul>`;
                 break;
@@ -48,13 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
             let finalFare = 0;
             switch (currentService) {
                 case 'bike':
-                    let calculatedBikeFare;
-                    if (distance <= 7) {
-                        calculatedBikeFare = 900 + (distance * 1750);
-                    } else {
-                        calculatedBikeFare = 3500 + (distance * 1550);
-                    }
-                    finalFare = Math.max(6000, calculatedBikeFare);
+                    // LOGIKA BIKE DIKEMBALIKAN KE VERSI ASLI YANG BENAR
+                    finalFare = Math.max(8900, (distance * 2400) - 1800);
                     break;
                 case 'car':
                     if (distance <= 3) { finalFare = 12100; } 
@@ -75,12 +70,13 @@ document.addEventListener('DOMContentLoaded', function() {
             let estimatedDistance = 0;
             switch (currentService) {
                 case 'bike':
-                     if (fare < 6000) { input2.value = 'Tarif min.'; return; }
-                     if (fare <= 13150) { // Batas perkiraan antara lapis 1 dan 2
-                         estimatedDistance = (fare - 900) / 1750;
-                     } else { 
-                         estimatedDistance = (fare - 3500) / 1550;
-                     }
+                     if (fare < 8900) { input2.value = 'Tarif min.'; return; }
+                     estimatedDistance = (fare + 1800) / 2400;
+                     break;
+                case 'delivery':
+                     if (fare < 4100) { input2.value = 'Tarif min.'; return; }
+                     if (fare === 4100) { input2.value = '~ 0-3'; return; }
+                     estimatedDistance = (fare - 50) / 1650;
                      break;
                 case 'car':
                     if (fare < 12100) { input2.value = 'Tarif min.'; return; }
@@ -88,11 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (fare <= 40000) { estimatedDistance = (fare - 625) / 4200; } 
                     else { estimatedDistance = (fare - 3200) / 4140; }
                     break;
-                case 'delivery':
-                     if (fare < 4100) { input2.value = 'Tarif min.'; return; }
-                     if (fare === 4100) { input2.value = '~ 0-3'; return; }
-                     estimatedDistance = (fare - 50) / 1650;
-                     break;
             }
             input2.value = Math.max(0, estimatedDistance).toFixed(1);
         }
