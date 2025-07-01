@@ -1,9 +1,8 @@
-// ===== SCRIPT.JS (VERSI 9.1) =====
+// ===== v10.0 =====
 
 document.addEventListener('DOMContentLoaded', function() {
     // --- ELEMEN DOM ---
     const greetingEl = document.getElementById('greeting');
-    const datetimeEl = document.getElementById('datetime-display'); // ===== ELEMEN BARU =====
     const input1 = document.getElementById('input1');
     const input2 = document.getElementById('input2');
     const swapButton = document.getElementById('swap-button');
@@ -17,52 +16,29 @@ document.addEventListener('DOMContentLoaded', function() {
     let isDistanceToFare = true;
 
     // --- FUNGSI ---
-
-    // 1. Fungsi Sapaan Selamat Pagi/Siang/Sore/Malam
     function setGreeting() {
         const hour = new Date().getHours();
         const greetingText = hour >= 5 && hour < 12 ? 'Selamat Pagi' : hour >= 12 && hour < 15 ? 'Selamat Siang' : hour >= 15 && hour < 18 ? 'Selamat Sore' : 'Selamat Malam';
         greetingEl.textContent = `${greetingText}, Semangat Cari Orderan!`;
     }
 
-    // ===== FUNGSI BARU UNTUK TANGGAL & WAKTU DINAMIS =====
-    function updateDateTime() {
-        const now = new Date();
-        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
-        const dayName = days[now.getDay()];
-        const date = now.getDate();
-        const monthName = months[now.getMonth()];
-        const year = now.getFullYear();
-
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-
-        datetimeEl.textContent = `${dayName}, ${date} ${monthName} ${year} | ${hours}:${minutes}:${seconds}`;
-    }
-    // =======================================================
-
-    // 3. Fungsi untuk menampilkan catatan/keterangan rumus
     function updateNote() {
         let noteContent = `<p class="small text-secondary mb-0"><strong>Penting:</strong> Kalkulator ini adalah <i>tool independen</i> & bukan aplikasi resmi Maxim. Perhitungan adalah <strong>hasil estimasi</strong> berdasarkan analisis data nyata di Yogyakarta.</p><hr class="my-2"><p class="small text-secondary mb-1">`;
         switch (currentService) {
             case 'bike':
-                noteContent += `Layanan <strong>Bike</strong> diestimasi menggunakan <strong>formula progresif tunggal</strong>:<br><code>(Jarak &times; Rp 2.400) - Rp 1.800</code>, dengan tarif minimal <strong>Rp 8.900</strong>.`;
-                break;
-            case 'car':
-                noteContent += `Layanan <strong>Car</strong> diestimasi menggunakan <strong>model presisi 3-lapis</strong>:<ul class="mb-0 ps-3"><li><strong>0-3 km:</strong> Tarif flat <strong>Rp 12.100</strong>.</li><li><strong>3.1-9 km:</strong> <code>Rp 625 + (Jarak &times; Rp 4.200)</code>.</li><li><strong>>9 km:</strong> <code>Rp 3.200 + (Jarak &times; Rp 4.140)</code>.</li></ul>`;
+                noteContent += `Layanan <strong>Bike</strong> diestimasi menggunakan <strong>model presisi 2-lapis</strong>:<ul class="mb-0 ps-3"><li><strong>0-7 km:</strong> <code>Rp 900 + (Jarak &times; Rp 1.750)</code></li><li><strong>>7 km:</strong> <code>Rp 3.500 + (Jarak &times; Rp 1.550)</code></li></ul>Dengan tarif minimal <strong>Rp 6.000</strong>.`;
                 break;
             case 'delivery':
                  noteContent += `Layanan <strong>Bike Delivery</strong> diestimasi menggunakan <strong>model 2-lapis</strong>:<ul class="mb-0 ps-3"><li><strong>0-3 km:</strong> Tarif flat <strong>Rp 4.100</strong>.</li><li><strong>>3 km:</strong> <code>Rp 50 + (Jarak &times; Rp 1.650)</code>.</li></ul>`;
+                break;  
+            case 'car':
+                noteContent += `Layanan <strong>Car</strong> diestimasi menggunakan <strong>model presisi 3-lapis</strong>:<ul class="mb-0 ps-3"><li><strong>0-3 km:</strong> Tarif flat <strong>Rp 12.100</strong>.</li><li><strong>3.1-9 km:</strong> <code>Rp 625 + (Jarak &times; Rp 4.200)</code>.</li><li><strong>>9 km:</strong> <code>Rp 3.200 + (Jarak &times; Rp 4.140)</code>.</li></ul>`;
                 break;
         }
         noteContent += `</p><p class="small text-danger mt-2 fst-italic">*Tarif final dapat berbeda karena faktor jam sibuk (surge price).</p>`;
         noteSection.innerHTML = noteContent;
     }
 
-    // 4. Fungsi Kalkulasi Utama
     function calculate() {
         if (isDistanceToFare) {
             const standardizedValue = input1.value.replace(',', '.');
@@ -72,7 +48,13 @@ document.addEventListener('DOMContentLoaded', function() {
             let finalFare = 0;
             switch (currentService) {
                 case 'bike':
-                    finalFare = Math.max(8900, (distance * 2400) - 1800);
+                    let calculatedBikeFare;
+                    if (distance <= 7) {
+                        calculatedBikeFare = 900 + (distance * 1750);
+                    } else {
+                        calculatedBikeFare = 3500 + (distance * 1550);
+                    }
+                    finalFare = Math.max(6000, calculatedBikeFare);
                     break;
                 case 'car':
                     if (distance <= 3) { finalFare = 12100; } 
@@ -93,8 +75,12 @@ document.addEventListener('DOMContentLoaded', function() {
             let estimatedDistance = 0;
             switch (currentService) {
                 case 'bike':
-                     if (fare < 8900) { input2.value = 'Tarif min.'; return; }
-                     estimatedDistance = (fare + 1800) / 2400;
+                     if (fare < 6000) { input2.value = 'Tarif min.'; return; }
+                     if (fare <= 13150) { // Batas perkiraan antara lapis 1 dan 2
+                         estimatedDistance = (fare - 900) / 1750;
+                     } else { 
+                         estimatedDistance = (fare - 3500) / 1550;
+                     }
                      break;
                 case 'car':
                     if (fare < 12100) { input2.value = 'Tarif min.'; return; }
@@ -112,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // --- Event Listeners dan fungsi lainnya ---
+    // --- Event Listeners dan fungsi lainnya (Tetap Sama) ---
     function swapCalculation() {
         isDistanceToFare = !isDistanceToFare;
         [input1.value, input2.value] = ['', ''];
@@ -131,10 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     input1.addEventListener('input', calculate);
     swapButton.addEventListener('click', swapCalculation);
-
-    // --- INISIALISASI HALAMAN ---
     setGreeting();
     updateNote();
-    updateDateTime(); // Panggil sekali saat load agar tidak kosong
-    setInterval(updateDateTime, 1000); // Panggil setiap 1 detik untuk efek jam dinamis
 });
