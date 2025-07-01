@@ -44,7 +44,7 @@ Aplikasi ini sudah di-hosting dan bisa diakses langsung melalui link di bawah in
 
 ---
 
-## ➗ Formula Perhitungan Tarif Dasar
+## ➗ Formula Perhitungan Tarif Dasar Akurat
 
 Kalkulator ini menggunakan model perhitungan tarif dasar (normal) yang berbeda untuk setiap layanan.
 
@@ -64,7 +64,7 @@ Kalkulator ini menggunakan model perhitungan tarif dasar (normal) yang berbeda u
 -   **Lapis 2 (3.1 - 9 km):** `Rp 625 + (Jarak × Rp 4.200)`
 -   **Lapis 3 (> 9 km):** `Rp 3.200 + (Jarak × Rp 4.140)`
 
-**Disclaimer:** Formula ini adalah hasil estimasi tarif dasar. Tarif final di aplikasi resmi Maxim dapat lebih tinggi karena faktor dinamis seperti **jam sibuk (surge price)**, kondisi lalu lintas, dan kebijakan terbaru dari Maxim.
+**Disclaimer:** Formula ini adalah hasil estimasi tarif dasar. Tarif final di aplikasi resmi Maxim dapat berbeda karena faktor dinamis seperti **jam sibuk (surge price)**, kondisi lalu lintas, dan kebijakan terbaru dari Maxim.
 
 ---
 
@@ -83,8 +83,5 @@ Merasa ada perhitungan yang kurang akurat atau punya data orderan baru (terutama
 Dibuat dan dikembangkan berdasarkan ide dan data dari **Hanif Ubaidur Rohman Syah**.
 
 -   **GitHub:** [hanipubaidur](https://github.com/hanipubaidur)
-
-Proyek ini berada di bawah Lisensi MIT.
--   **LICENSE:** [MIT](https://github.com/hanipubaidur/KalkulatorMaxim/blob/main/LICENSE)
 
 Proyek ini berada di bawah Lisensi MIT.
